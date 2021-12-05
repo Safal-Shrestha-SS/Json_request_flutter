@@ -24,6 +24,15 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   final requests = Requests();
   final myController = TextEditingController();
+  final snackBar = SnackBar(
+    content: const Text("Comment Posted but doesn't persist"),
+    action: SnackBarAction(
+      label: 'OK',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
 
   late String comment;
   @override
@@ -162,17 +171,20 @@ class _CommentScreenState extends State<CommentScreen> {
                     ),
                     TextButton(
                         onPressed: () async {
-                          // myController.clear();
-                          // if (comment.length > 1) {
-                          //   try {
-                          //     await requests.postComment(
-                          //         widget.post,
-                          //         context.read<CurrentUser>().currentUser,
-                          //         comment);
-                          //   } catch (e) {
-                          //     throw Exception("Couldn't upload");
-                          //   }
-                          // }
+                          if (myController.text.isNotEmpty) {
+                            try {
+                              await requests.postComment(
+                                  widget.post,
+                                  context.read<CurrentUser>().currentUser,
+                                  comment);
+                              comment = '';
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } catch (e) {
+                              throw Exception("Couldn't upload");
+                            }
+                          }
+                          myController.clear();
                         },
                         child: const Text('Post'))
                   ],

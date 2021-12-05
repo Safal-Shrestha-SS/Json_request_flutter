@@ -8,16 +8,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Requests extends ChangeNotifier {
   var commentLength = 0;
-  late Future<List<Posts>> postsList;
-  List<Posts> parsePosts(String responseBody) {
+  late List<Posts> postsList;
+  late List<User> usersList;
+  late List<Comments> commentsList;
+  Future<List<Posts>> parsePosts(String responseBody) async {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    postsList = parsed.map<Posts>((json) => Posts.fromJson(json)).toList();
+    postsList =
+        await parsed.map<Posts>((json) => Posts.fromJson(json)).toList();
     notifyListeners();
     return parsed.map<Posts>((json) => Posts.fromJson(json)).toList();
   }
 
   List<User> parseUsers(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    usersList = parsed.map<User>((json) => User.fromJson(json)).toList();
+    notifyListeners();
     return parsed.map<User>((json) => User.fromJson(json)).toList();
   }
 
@@ -26,6 +31,9 @@ class Requests extends ChangeNotifier {
     final test =
         parsed.map<Comments>((json) => Comments.fromJson(json)).toList();
     commentLength = test.length;
+    commentsList =
+        parsed.map<Comments>((json) => Comments.fromJson(json)).toList();
+
     notifyListeners();
     return parsed.map<Comments>((json) => Comments.fromJson(json)).toList();
   }
@@ -98,7 +106,7 @@ class Requests extends ChangeNotifier {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode({
+      body: jsonEncode(<String, dynamic>{
         'postId': post.id,
         'name': user.name,
         'email': user.email,

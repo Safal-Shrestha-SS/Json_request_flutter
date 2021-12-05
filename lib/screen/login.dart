@@ -22,7 +22,15 @@ class _LogINState extends State<LogIN> {
     return user;
   }
 
-  final snackBar = const SnackBar(content: Text("User doesn't exist"));
+  final snackBar = SnackBar(
+    content: const Text("""User doesn't exist"""),
+    action: SnackBarAction(
+      label: 'OK',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
 
   late int userId;
   Future<bool> check(int id) async {

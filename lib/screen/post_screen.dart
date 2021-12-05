@@ -3,7 +3,6 @@ import 'package:intern_challenges/data_model/comments.dart';
 import 'package:intern_challenges/data_model/posts.dart';
 import 'package:intern_challenges/data_model/users.dart';
 import 'package:intern_challenges/screen/comment_screen.dart';
-import 'package:intern_challenges/screen_body/topbar.dart';
 
 import 'package:intern_challenges/services/requests.dart';
 import 'package:provider/provider.dart';
@@ -18,22 +17,36 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   late Future<List<Posts>> postsList;
   List<User>? usersList;
+  Future<List<Posts>> getPost() async {
+    await context.read<Requests>().fetchPosts();
+    await context.read<Requests>().fetchUsers();
+    return context.read<Requests>().postsList;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    postsList = getPost();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
       body: Container(
           color: Theme.of(context).backgroundColor,
           child: FutureBuilder<List<Posts>>(
-              future: context.read<Requests>().postsList,
+              future: postsList,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasError) {
                     return Text(snapshot.error.toString());
                   }
 
-                  return PostBox(items: snapshot.data, users: usersList);
+                  return PostBox(
+                    items: snapshot.data,
+                    users: context.watch<Requests>().usersList,
+                  );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -56,12 +69,6 @@ class _PostBoxState extends State<PostBox> {
   late List<Comments> send;
   late Posts sendPost;
   late User sendUsers;
-  Future<List<Comments>> getComments(String id) async {
-    List<Comments> commentsList;
-
-    commentsList = await context.read<Requests>().fetchComments(id);
-    return commentsList;
-  }
 
   @override
   void initState() {
@@ -82,7 +89,9 @@ class _PostBoxState extends State<PostBox> {
                       builder: (context) => CommentScreen(
                             commentsList: send,
                             post: widget.items![index],
-                            user: widget.users![id],
+                            user: (id < 11)
+                                ? widget.users![id]
+                                : widget.users![2],
                           )));
             },
             child: Hero(
@@ -97,11 +106,15 @@ class _PostBoxState extends State<PostBox> {
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
                             TextSpan(
-                                text: widget.users![id].name,
+                                text: (id < 11)
+                                    ? widget.users![id].name
+                                    : widget.users![2].name,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                             TextSpan(
-                                text: ' @${widget.users![id].username}',
+                                text: (id < 11)
+                                    ? widget.users![id].username
+                                    : ' @${widget.users![2].username}',
                                 style: const TextStyle(fontSize: 10)),
                           ],
                         ),
@@ -120,14 +133,14 @@ class _PostBoxState extends State<PostBox> {
                         const IconButton(
                             onPressed: null, icon: Icon(Icons.comment)),
                         FutureBuilder<List<Comments>>(
-                            future:
-                                getComments(widget.items![index].id.toString()),
+                            future: context.read<Requests>().fetchComments(
+                                widget.items![index].id.toString()),
                             builder: (context, snapshot) {
                               if (!snapshot.hasData) {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               }
-                              send = snapshot.data!;
+                              send = context.watch<Requests>().commentsList;
                               var length = snapshot.data!.length.toString();
 
                               return Text(length.toString());
