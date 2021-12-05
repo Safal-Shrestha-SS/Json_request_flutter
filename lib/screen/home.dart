@@ -91,6 +91,7 @@ class _HomeState extends State<Home> {
       extendBody: true,
       appBar: const TopBar(),
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: iControll,
         scrollDirection: Axis.horizontal,
         onPageChanged: _onPageChanged,

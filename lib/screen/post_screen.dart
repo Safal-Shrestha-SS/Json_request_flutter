@@ -87,69 +87,66 @@ class _PostBoxState extends State<PostBox> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CommentScreen(
-                            commentsList: send,
+                            commentsList:
+                                context.watch<Requests>().commentsList,
                             post: widget.items![index],
                             user: (id < 11)
                                 ? widget.users![id]
                                 : widget.users![2],
                           )));
             },
-            child: Hero(
-              tag: widget.items![index].id,
-              child: Card(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 5),
-                    ListTile(
-                      dense: true,
-                      title: RichText(
-                        text: TextSpan(
-                          style: DefaultTextStyle.of(context).style,
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: (id < 11)
-                                    ? widget.users![id].name
-                                    : widget.users![2].name,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
-                            TextSpan(
-                                text: (id < 11)
-                                    ? '@ ${widget.users![id].username}'
-                                    : ' @ ${widget.users![2].username}',
-                                style: const TextStyle(fontSize: 10)),
-                          ],
-                        ),
-                      ),
-                      subtitle: ListTile(
-                        title: Text(widget.items![index].title),
-                        subtitle: Text(
-                          widget.items![index].body,
-                        ),
-                        contentPadding: const EdgeInsetsDirectional.all(0),
+            child: Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    dense: true,
+                    title: RichText(
+                      text: TextSpan(
+                        style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: (id < 11)
+                                  ? widget.users![id].name
+                                  : widget.users![2].name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          TextSpan(
+                              text: (id < 11)
+                                  ? '@ ${widget.users![id].username}'
+                                  : ' @ ${widget.users![2].username}',
+                              style: const TextStyle(fontSize: 10)),
+                        ],
                       ),
                     ),
-                    Row(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const IconButton(
-                            onPressed: null, icon: Icon(Icons.comment)),
-                        FutureBuilder<List<Comments>>(
-                            future: context.read<Requests>().fetchComments(
-                                widget.items![index].id.toString()),
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              }
-                              send = context.watch<Requests>().commentsList;
-                              var length = snapshot.data!.length.toString();
+                    subtitle: ListTile(
+                      title: Text(widget.items![index].title),
+                      subtitle: Text(
+                        widget.items![index].body,
+                      ),
+                      contentPadding: const EdgeInsetsDirectional.all(0),
+                    ),
+                  ),
+                  Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const IconButton(
+                          onPressed: null, icon: Icon(Icons.comment)),
+                      FutureBuilder<List<Comments>>(
+                          future: context.read<Requests>().fetchComments(
+                              widget.items![index].id.toString()),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
 
-                              return Text(length.toString());
-                            }),
-                      ],
-                    )
-                  ],
-                ),
+                            var length = snapshot.data!.length.toString();
+
+                            return Text(length.toString());
+                          }),
+                    ],
+                  )
+                ],
               ),
             ),
           );

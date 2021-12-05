@@ -49,59 +49,56 @@ class _CommentScreenState extends State<CommentScreen> {
           color: Theme.of(context).backgroundColor,
           child: Column(
             children: [
-              Hero(
-                tag: widget.post.id,
-                child: Card(
-                    child: Column(
-                  children: [
-                    ListTile(
-                      dense: true,
-                      title: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  Theme.of(context).textTheme.bodyText1!.color),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: widget.user.name,
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color),
-                            ),
-                            TextSpan(
-                              text: ' @${widget.user.username}',
-                              style: TextStyle(
-                                  fontSize: 10,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .color),
-                            )
-                          ],
-                        ),
-                      ),
-                      subtitle: ListTile(
-                        title: Text(widget.post.title),
-                        subtitle: Text(
-                          widget.post.body,
-                        ),
-                        contentPadding: const EdgeInsetsDirectional.all(0),
+              Card(
+                  child: Column(
+                children: [
+                  ListTile(
+                    dense: true,
+                    title: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color:
+                                Theme.of(context).textTheme.bodyText1!.color),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: widget.user.name,
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color),
+                          ),
+                          TextSpan(
+                            text: ' @${widget.user.username}',
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .color),
+                          )
+                        ],
                       ),
                     ),
-                    Row(
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const IconButton(
-                            onPressed: null, icon: Icon(Icons.comment)),
-                        Text(widget.commentsList.length.toString())
-                      ],
+                    subtitle: ListTile(
+                      title: Text(widget.post.title),
+                      subtitle: Text(
+                        widget.post.body,
+                      ),
+                      contentPadding: const EdgeInsetsDirectional.all(0),
                     ),
-                  ],
-                )),
-              ),
+                  ),
+                  Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      const IconButton(
+                          onPressed: null, icon: Icon(Icons.comment)),
+                      Text(widget.commentsList.length.toString())
+                    ],
+                  ),
+                ],
+              )),
               Divider(
                 endIndent: 15,
                 indent: 15,

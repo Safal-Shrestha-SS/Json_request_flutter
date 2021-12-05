@@ -28,37 +28,33 @@ class _TodosScreenState extends State<TodosScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            FutureBuilder<Object>(
-                future: todosList,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return DataTable(
-                    headingRowHeight: 20,
-                    columns: const <DataColumn>[
-                      DataColumn(label: Text('Title')),
-                      DataColumn(label: Text('Completed')),
-                    ],
-                    rows: context
-                        .watch<Requests>()
-                        .todos
-                        .map((e) => DataRow(cells: [
-                              DataCell(Text(e.title.toString())),
-                              DataCell(Text(e.completed.toString())),
-                            ]))
-                        .toList(),
-                  );
-                }),
-          ],
-        ),
-      ),
+    return SingleChildScrollView(
+      child: FutureBuilder<Object>(
+          future: todosList,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return Column(
+              children: [
+                const SizedBox(height: 70),
+                DataTable(
+                  columns: const <DataColumn>[
+                    DataColumn(label: Text('Title')),
+                    DataColumn(label: Text('Completed')),
+                  ],
+                  rows: context
+                      .watch<Requests>()
+                      .todos
+                      .map((e) => DataRow(cells: [
+                            DataCell(Text(e.title.toString())),
+                            DataCell(Text(e.completed.toString())),
+                          ]))
+                      .toList(),
+                ),
+              ],
+            );
+          }),
     );
   }
 }
