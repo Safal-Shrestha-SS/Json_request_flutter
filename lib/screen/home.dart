@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:intern_challenges/screen/post_screen.dart';
+import 'package:intern_challenges/screen/todos_screen.dart';
+import 'package:intern_challenges/screen/users_screen.dart';
 import 'package:intern_challenges/screen_body/topbar.dart';
 
 class Home extends StatefulWidget {
@@ -11,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PageController iControll = PageController(initialPage: 1);
+  PageController iControll = PageController(initialPage: 0);
   final BorderRadius _borderRadius = const BorderRadius.only(
     topLeft: Radius.circular(25),
     topRight: Radius.circular(25),
@@ -78,16 +80,6 @@ class _HomeState extends State<Home> {
           showUnselectedLabels = true;
         });
         break;
-      case 3:
-        setState(() {
-          snakeBarStyle = SnakeBarBehaviour.pinned;
-          snakeShape = SnakeShape.rectangle;
-          padding = EdgeInsets.zero;
-          bottomBarShape = BeveledRectangleBorder(borderRadius: _borderRadius);
-          showSelectedLabels = true;
-          showUnselectedLabels = true;
-        });
-        break;
     }
   }
 
@@ -102,17 +94,10 @@ class _HomeState extends State<Home> {
         controller: iControll,
         scrollDirection: Axis.horizontal,
         onPageChanged: _onPageChanged,
-        children: <Widget>[
-          const PostScreen(),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.red,
-          ),
-          Container(
-            color: Colors.blue,
-          ),
+        children: const <Widget>[
+          PostScreen(),
+          UserScreen(),
+          TodosScreen(),
         ],
       ),
       bottomNavigationBar: SnakeNavigationBar.color(
@@ -139,9 +124,6 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.notifications), label: 'tickets'),
           BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'calendar'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.podcasts), label: 'microphone'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'search')
         ],
         // selectedLabelStyle: const TextStyle(fontSize: 14),
         // unselectedLabelStyle: const TextStyle(fontSize: 10),

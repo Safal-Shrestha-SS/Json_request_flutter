@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intern_challenges/data_model/users.dart';
-import 'package:intern_challenges/screen/post_screen.dart';
+import 'package:intern_challenges/screen/home.dart';
 import 'package:intern_challenges/services/requests.dart';
 import 'package:intern_challenges/state/current_user.dart';
 import 'package:provider/provider.dart';
-
-final requests = Requests();
 
 class LogIN extends StatefulWidget {
   const LogIN({Key? key}) : super(key: key);
@@ -18,7 +16,7 @@ class _LogINState extends State<LogIN> {
   late Future<List<User>> userList;
   late List<User> user;
   Future<List<User>> getUser() async {
-    user = await requests.fetchUsers();
+    user = await context.read<Requests>().fetchUsers();
     return user;
   }
 
@@ -78,10 +76,8 @@ class _LogINState extends State<LogIN> {
               ElevatedButton(
                 onPressed: () async {
                   if (await check(userId)) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PostScreen()));
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => const Home()));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }

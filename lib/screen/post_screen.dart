@@ -99,6 +99,7 @@ class _PostBoxState extends State<PostBox> {
               child: Card(
                 child: Column(
                   children: [
+                    const SizedBox(height: 5),
                     ListTile(
                       dense: true,
                       title: RichText(
@@ -113,8 +114,8 @@ class _PostBoxState extends State<PostBox> {
                                     fontWeight: FontWeight.bold)),
                             TextSpan(
                                 text: (id < 11)
-                                    ? widget.users![id].username
-                                    : ' @${widget.users![2].username}',
+                                    ? '@ ${widget.users![id].username}'
+                                    : ' @ ${widget.users![2].username}',
                                 style: const TextStyle(fontSize: 10)),
                           ],
                         ),

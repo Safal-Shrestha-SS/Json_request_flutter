@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intern_challenges/screen/home.dart';
 import 'package:intern_challenges/screen/login.dart';
 
 class Splash extends StatefulWidget {
@@ -23,8 +22,8 @@ class _SplashState extends State<Splash> {
             );
           },
           onEnd: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => const Home()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const LogIN()));
           },
         ),
       ),
