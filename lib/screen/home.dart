@@ -120,10 +120,10 @@ class _HomeState extends State<Home> {
               curve: Curves.linear);
         }),
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.post_add), label: 'tickets'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'tickets'),
-          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'calendar'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'home'),
+              icon: Icon(Icons.supervised_user_circle), label: 'calendar'),
+          BottomNavigationBarItem(icon: Icon(Icons.check_box), label: 'home'),
         ],
         // selectedLabelStyle: const TextStyle(fontSize: 14),
         // unselectedLabelStyle: const TextStyle(fontSize: 10),
